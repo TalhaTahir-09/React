@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-const HelloWorld = function({name = "World"}){
-    return <h1>Hello, {name}!</h1>;
-}
+
 export default function Navbar(props) {
   return (
     <>
@@ -51,7 +49,6 @@ export default function Navbar(props) {
         </div>
       </nav>
     </div>
-    <HelloWorld name= "meow meow"/>
     </>
   );
 }
