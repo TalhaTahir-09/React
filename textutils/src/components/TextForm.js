@@ -2,33 +2,13 @@ import React, { useState } from "react";
 
 export default function TextForm(props) {
   const [text, setText] = useState("");
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [btnText, setBtnText] = useState("Toggle Dark Mode");
-
-  // Dark mode
-  function toggleDarkMode() {
-    if (btnText === "Toggle Dark Mode") {
-      setBtnText("Toggle Light Mode");
-    } else {
-      setBtnText("Toggle Dark Mode");
-    }
-    document.querySelector(".navbar").classList.toggle("dark-mode");
-    document.querySelector(".navbar-title").classList.toggle("dark-mode");
-    document.body.classList.toggle("dark-mode");
-    [...document.querySelectorAll(".nav-link")].forEach((item) => {
-      item.classList.toggle("dark-mode");
-    });
-    return setIsDarkMode(!isDarkMode);
-  }
-  const MyStyle = {
-    color: isDarkMode ? "white" : "black",
-    backgroundColor: isDarkMode ? "#333" : "white",
-  };
 
   // functions
   function toUpFunction() {
     let newText = text.toUpperCase();
     setText(newText);
+    
   }
   function toLoFunction() {
     let newText = text.toLowerCase();
@@ -47,6 +27,7 @@ export default function TextForm(props) {
   function toClearFunction() {
     let newText = "";
     setText(newText);
+    props.showAlert("Text has been cleared!" , "success")
   }
   function onChangeEvent(event) {
     setText(event.target.value);
@@ -62,12 +43,12 @@ export default function TextForm(props) {
 
   return (
     <>
-      <div className="container" style={MyStyle}>
+      <div className="container">
         <h1>{props.heading}</h1>
         <div className="mb-3">
           <textarea
             className="form-control"
-            style={MyStyle}
+          
             placeholder="Enter Text Here"
             value={text}
             onChange={onChangeEvent}
@@ -93,9 +74,6 @@ export default function TextForm(props) {
             onClick={() => emailExtractor(text.split(" "))}
           >
             Extract Email
-          </button>
-          <button className="btn btn-primary" onClick={toggleDarkMode}>
-            {btnText}
           </button>
         </div>
         <div className="container my-3">

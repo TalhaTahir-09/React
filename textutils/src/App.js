@@ -1,28 +1,48 @@
 import "./App.css";
+import React, { useState } from "react";
+import Alert from "./components/Alert";
 import Navbar from "./components/Navbar";
 import TextForm from "./components/TextForm";
 
-function toggleDarkMode() {
-  if(btnText === "Toggle Dark Mode"){
-    setBtnText("Toggle Light Mode")
-  }else{
-    setBtnText("Toggle Dark Mode")
-  }
-  document.querySelector(".navbar").classList.toggle('dark-mode');
-  document.querySelector(".navbar-title").classList.toggle('dark-mode');
-  document.body.classList.toggle('dark-mode');
-  [...document.querySelectorAll(".nav-link")].forEach(item => {
-    item.classList.toggle('dark-mode')
-  });
-  return setIsDarkMode(!isDarkMode);
-}
 let name = "Talha";
 function App() {
+  const [darkMode, setDarkMode] = useState("dark");
+  const [alert, setAlert] = useState("");
+  const showAlert = (message, type) => {
+    setAlert({msg : message, type})
+    setTimeout(() => {
+      setAlert("")
+    }, 1500);
+  }
+  if (darkMode === "dark") {
+    document.body.style.background = "#333";
+    document.body.style.color = "white";
+  } else {
+    document.body.style.background = "white";
+    document.body.style.color = "black";
+  }
+  const toggleMode = () => {
+    if (darkMode === "light") {
+      setDarkMode("dark");
+      showAlert("Theme of the page has been changed to Dark", "success")
+    } else {
+      setDarkMode("light");
+      showAlert("Theme of the page has been changed to Light", "success")
+    }
+  };
+ 
   return (
     <>
-      <Navbar about="About Us!" title="TextUtils" home="Home"/>
+      <Navbar
+        about="About Us!"
+        title="TextUtils"
+        home="Home"
+        mode={darkMode}
+        toggleMode={toggleMode}
+      />
+      <Alert alert={alert}/>
       <div className="container my-4">
-        <TextForm heading="Enter some text to analyze" />
+        <TextForm showAlert={showAlert}  heading="Enter some text to analyze" />
       </div>
     </>
   );
