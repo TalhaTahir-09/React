@@ -2,13 +2,23 @@ import React, { useState } from "react";
 
 export default function TextForm(props) {
   const [text, setText] = useState("");
-  const [btnText, setBtnText] = useState("Toggle Dark Mode");
 
-  // functions
+  // functions:
+  
+  function wordCounter(str) {
+    let count = 0;
+    let strArray = str.split(" ");
+    for (let i = 0; i < strArray.length; i++) {
+      if (strArray[i] !== "") {
+        count++;
+      }
+    }
+    return count;
+  }
+
   function toUpFunction() {
     let newText = text.toUpperCase();
     setText(newText);
-    
   }
   function toLoFunction() {
     let newText = text.toLowerCase();
@@ -23,24 +33,27 @@ export default function TextForm(props) {
     }
     setText(words.join(" "));
   }
-
+function emailExtractor(){
+let emailPattern = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/;
+let emailArray = text.split(" ");
+let foundEmails = []
+for (let i = 0; i < emailArray.length; i++) {
+  if(emailPattern.test(emailArray[i])){
+    foundEmails.push(emailArray[i])
+  }
+}
+  setText(foundEmails.toString())
+}
   function toClearFunction() {
     let newText = "";
     setText(newText);
-    props.showAlert("Text has been cleared!" , "success")
+    props.showAlert("Text has been cleared!", "success");
   }
   function onChangeEvent(event) {
     setText(event.target.value);
   }
-  function emailExtractor(array) {
-    let emailPattern = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/;
-    let foundEmails = [];
-    for (let i = 0; i < array.length; i++) {
-      if (emailPattern.test(array[i])) foundEmails.push(array[i]);
-    }
-    setText(foundEmails);
-  }
 
+  // 
   return (
     <>
       <div className="container">
@@ -48,12 +61,11 @@ export default function TextForm(props) {
         <div className="mb-3">
           <textarea
             className="form-control"
-          
             placeholder="Enter Text Here"
-            value={text}
             onChange={onChangeEvent}
             id="myBox"
             rows="8"
+            value={text}
           ></textarea>
         </div>
         <div className="btn-container d-flex gap-2">
@@ -69,17 +81,15 @@ export default function TextForm(props) {
           <button className="btn btn-primary" onClick={toClearFunction}>
             Clear Text
           </button>
-          <button
-            className="btn btn-primary mx-2"
-            onClick={() => emailExtractor(text.split(" "))}
-          >
-            Extract Email
+          <button className="btn btn-primary" onClick={emailExtractor}>
+            Email Text
           </button>
         </div>
         <div className="container my-3">
           <h2 className="">Text Summary</h2>
           <p>
-            Your text has <b>{text.split(" ").length} words</b> and{" "}
+            Your text has <b>{wordCounter(text)}</b>&nbsp;
+            {wordCounter(text) > 1 ? "words" : "word"}&nbsp;
             <b>{text.length} characters</b>.
           </p>
           <p>

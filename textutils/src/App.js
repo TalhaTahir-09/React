@@ -3,17 +3,19 @@ import React, { useState } from "react";
 import Alert from "./components/Alert";
 import Navbar from "./components/Navbar";
 import TextForm from "./components/TextForm";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import About from "./components/About";
 
-let name = "Talha";
 function App() {
   const [darkMode, setDarkMode] = useState("dark");
   const [alert, setAlert] = useState("");
+
   const showAlert = (message, type) => {
-    setAlert({msg : message, type})
+    setAlert({ msg: message, type });
     setTimeout(() => {
-      setAlert("")
+      setAlert("");
     }, 1500);
-  }
+  };
   if (darkMode === "dark") {
     document.body.style.background = "#333";
     document.body.style.color = "white";
@@ -24,26 +26,40 @@ function App() {
   const toggleMode = () => {
     if (darkMode === "light") {
       setDarkMode("dark");
-      showAlert("Theme of the page has been changed to Dark", "success")
+      showAlert("Theme of the page has been changed to Dark", "success");
     } else {
       setDarkMode("light");
-      showAlert("Theme of the page has been changed to Light", "success")
+      showAlert("Theme of the page has been changed to Light", "success");
     }
   };
- 
+  
+
   return (
     <>
-      <Navbar
-        about="About Us!"
-        title="TextUtils"
-        home="Home"
-        mode={darkMode}
-        toggleMode={toggleMode}
-      />
-      <Alert alert={alert}/>
-      <div className="container my-4">
-        <TextForm showAlert={showAlert}  heading="Enter some text to analyze" />
-      </div>
+      <BrowserRouter>
+        <Navbar
+          about="About Us!"
+          title="TextUtils"
+          home="Home"
+          mode={darkMode}
+          toggleMode={toggleMode}
+        />
+        <Alert alert={alert} />
+        <div className="container my-4">
+          <Routes>
+            <Route
+              path="home"
+              element={
+                <TextForm
+                  showAlert={showAlert}
+                  heading="Enter some text to analyze"
+                />
+              }
+            />
+            <Route path="about" element={<About/>}/>
+          </Routes>
+        </div>
+      </BrowserRouter>
     </>
   );
 }
