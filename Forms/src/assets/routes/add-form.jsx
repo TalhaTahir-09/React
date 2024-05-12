@@ -73,7 +73,7 @@ export default function Addform() {
       });
     }
   };
-
+  
   const passwordChecker = (e) => {
     let input = e.target.value;
     let passwordPattern = /^(?=.*[A-Z])[A-Za-z\d]{8,}$/;
