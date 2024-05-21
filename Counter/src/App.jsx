@@ -5,8 +5,16 @@ import "./App.css";
 import Child from "./Child";
 import isOdd from "is-odd";
 import React from "react";
+let request = indexedDB.open("MyDatabase", 1);
+  request.onsuccess = function (event) {
+    let db = event.target.result;
+    let transaction = db.transaction(["talha"]);
+    let objectStore = transaction.objectStore("storeName");
+    objectStore.add({ id: 1, name: "Talha" });
+  };
 
 function App() {
+  
   const [countOdd, setCountOdd] = useState(" ");
   const [count, setCount] = useState(0);
   function setCounterFn() {
@@ -30,10 +38,10 @@ function App() {
         initialValues={{ email: "", password: "" }}
         validate={(value) => {
           const error = {};
-          console.log(value.email)
+          console.log(value.email);
           if (value.email === "") {
             error.email = "Required";
-            console.log("1")
+            console.log("1");
           } else if (!/^[a-zA-Z0-9._%+-]+@gmail.com$/.test(value.email)) {
             error.email = "Invalid Email";
           }
@@ -53,7 +61,7 @@ function App() {
           <ErrorMessage name="password"></ErrorMessage>
           <button type="submit">Submit</button>
         </Form>
-      </Formik> 
+      </Formik>
       <Child name={"Talha"} />
     </>
   );
